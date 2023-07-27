@@ -4,9 +4,9 @@ const config = require("../config/config");
 const secretKey = config.secret_key;
 
 // Function to generate a JWT token for a given user ID
-const generateToken = (userId) => {
-  const payload = { userId };
-  const options = { expiresIn: "1h" };
+const generateToken = (userId, userName) => {
+  const payload = { userId, userName };
+  const options = { expiresIn: "3h" };
 
   return jwt.sign(payload, secretKey, options);
 };

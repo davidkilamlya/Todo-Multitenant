@@ -49,7 +49,7 @@ exports.userLogin = async (req, res) => {
     }
 
     // Create a JWT token for the user
-    const token = await jwtService.generateToken(user._id);
+    const token = await jwtService.generateToken(user._id,user.firstName);
     console.log("user logged in successfully");
     res.status(200).json({ token });
   } catch (error) {
