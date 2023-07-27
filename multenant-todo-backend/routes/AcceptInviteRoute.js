@@ -1,11 +1,11 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const TodoList = require("../models/TodoListModel");
-
+const jwtService = require("../services/JwtService");
 const router = express.Router();
 
 // Route: Accept a todo list collaboration invitation
-router.post("/accept-invite/:listId", async (req, res) => {
+router.post("/accept-invite/:listId",jwtService.verifyToken, async (req, res) => {
   try {
     const listId = req.params.listId;
     const { collaboratorEmail, invitationToken } = req.body;

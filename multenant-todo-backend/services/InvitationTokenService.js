@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
+const config = require("../config/config");
+
 
 // Function to generate an invitation token
 function generateInvitationToken(collaboratorEmail, todoListId) {
-  const secretKey = "your-secret-key"; // Replace this with your secret key for signing the token
+  const secretKey = config.secret_key;
   const tokenData = {
     type: "invitation",
     email: collaboratorEmail,
@@ -21,7 +23,7 @@ function generateInvitationToken(collaboratorEmail, todoListId) {
 
 // Function to verify and decode the invitation token
 function verifyInvitationToken(token) {
-  const secretKey = "your-secret-key";
+  const secretKey = config.secret_key;
 
   try {
     // Verify and decode the token
