@@ -41,13 +41,13 @@ router.post(
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "your_email@gmail.com",
-          pass: "your_email_password",
+          user: "dkilamlya@gmail.com",
+          pass: "password",
         },
       });
 
       const mailOptions = {
-        from: "your_email@gmail.com",
+        from: "dkilamlya@gmail.com",
         to: collaboratorEmail,
         subject: newInviteEmail.subject,
         text: newInviteEmail.content,
@@ -56,7 +56,7 @@ router.post(
       transporter.sendMail(mailOptions, async (error, info) => {
         if (error) {
           console.log("Error sending email:", error);
-          // Handle email sending error here if needed
+         
         } else {
           console.log("Invitation email sent:", info.response);
         }
