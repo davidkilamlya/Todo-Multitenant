@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwtService = require("../services/JwtService");
 const User = require("../models/UserModel");
-const userController=require("../controllers/userController")
+const userController = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -16,6 +16,12 @@ router.post("/login", userController.userLogin);
 router.get("/profile", jwtService.verifyToken, userController.getUserProfile);
 
 // Route: Update User Profile
-router.put("/profile", jwtService.verifyToken,userController.updateUserProfile);
+router.put(
+  "/profile",
+  jwtService.verifyToken,
+  userController.updateUserProfile
+);
+
+router.post("/user", jwtService.verifyToken, userController.getUser);
 
 module.exports = router;

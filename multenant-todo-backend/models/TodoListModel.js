@@ -3,24 +3,24 @@ const Schema = mongoose.Schema;
 
 const todoItemSchema = new Schema({
   title: String,
-  description: String,
-  dueDate: Date,
+  priorityId: Number,
   priority: String,
   completed: { type: Boolean, default: false },
 });
 
 const collaborationSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: "User" },
   role: String,
+  name: String,
+  userId: String,
 });
 
 const todoList = new Schema({
   todoListTitle: String,
   todoListDescription: String,
   createdDate: Date,
+  deadlineDate: String,
   owner: { type: Schema.Types.ObjectId, ref: "User" }, // Reference to the owner (User)
   collaborators: [collaborationSchema], // References to collaborators (Users)
-  deadlineDate: Date, // Optional field for the entire list's deadline
   todoItems: [
     // An array to store todo items associated with the list
     todoItemSchema,

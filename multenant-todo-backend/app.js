@@ -50,6 +50,12 @@ connectDB();
 app.use("/api/v1/", UserRoute);
 app.use("/api/v1/todo-lists/", TodoListRoute);
 app.use("/api/v1/todo-lists/", TodoListItemRoute);
+app.use("/api/v1/todo-lists/", InvitationRoute);
+app.use("/api/v1/todo-lists/", CollaboratorsRoute)
+app.use("/api/v1/accept-invite/",AcceptInviteRoute);
+
+
+
 
 app.get("/", (req, res) => {
   res.send(

@@ -9,6 +9,7 @@ exports.createTodoList = async (req, res) => {
   try {
     const { todoListTitle, todoListDescription, deadlineDate } = req.body;
     const ownerId = req.user._id;
+    console.log(req.body);
 
     // console.log(req.user, new Date().getDate());
     const newTodoList = new TodoList({
@@ -36,7 +37,7 @@ exports.getTodoLists = async (req, res) => {
   try {
     const ownerId = req.user._id;
     const allTodoLists = await TodoList.find({ owner: ownerId });
-    res.status(200).json({ data: allTodoLists });
+    res.status(200).json({ data: allTodoLists.reverse() });
   } catch (error) {
     console.log("Failed to get list ", error);
     res.status(500).json({ message: "Failed to get lists" });
@@ -66,27 +67,19 @@ exports.updatedTodoList = async (req, res) => {
   try {
     const TodoListId = req.params.id;
     console.log(TodoListId);
-    const {
-      todoListTitle,
-      todoListDescription,
-      todoItems,
-      collaborators,
-      deadlineDate,
-      archived,
-    } = req.body;
+    const { todoListTitle, todoListDescription, deadlineDate, archived } =
+      req.body;
 
+    console.log(req.body);
     const newTodoList = {
       todoListTitle,
       todoListDescription,
-      todoItems,
-      collaborators,
-      deadlineDate,
+      deadlineDate: new Date(deadlineDate),
       archived,
     };
     const updatedTodoList = await TodoList.findByIdAndUpdate(
       TodoListId,
-      newTodoList,
-      { new: true }
+      newTodoList
     );
     if (!updatedTodoList) {
       console.log("the list is not found");
@@ -112,7 +105,7 @@ exports.deleteTodoList = async (req, res) => {
       return res.status(404).json({ message: "List not found" });
     }
     await TodoList.findByIdAndDelete(todoListId, todoList);
-    res.status(204).json({ message: "List deleted successfully" });
+    res.status(200).json({ message: "List deleted successfully" });
   } catch (error) {
     console.log("Failed to delete list");
     return res.status(500).json({ message: "Failed to delete list" });

@@ -6,14 +6,13 @@ exports.createTodoItem = async (req, res) => {
     const listId = req.params.listId;
     console.log("paramiter", req.params);
     // Extract todo item properties from the request body
-    const { title, description, dueDate, priority } = req.body;
+    const { title, description, dueDate, priority, priorityId } = req.body;
 
     // Create the new todo item
     const newTodoItem = {
       title,
-      description,
       priority,
-      dueDate: new Date(dueDate),
+      priorityId,
       completed: false,
     };
 
@@ -27,13 +26,12 @@ exports.createTodoItem = async (req, res) => {
     todoList.todoItems.push(newTodoItem);
     await todoList.save();
 
-    res.status(201).json(newTodoItem);
+    res.status(201).json({ message: "Item created successfully", newTodoItem });
   } catch (error) {
     console.log("Failed to create todo item", error);
     res.status(500).json({ message: "Failed to create todo item" });
   }
 };
-
 
 // Route: Get all todo items within a specific todo list
 exports.getTodoItems = async (req, res) => {
@@ -47,15 +45,14 @@ exports.getTodoItems = async (req, res) => {
     }
 
     const todoItems = todoList.todoItems;
-    
+
     res.status(200).json(todoItems);
   } catch (error) {
-    console.log('items now is',todoItems)
+    console.log("items now is", todoItems);
     console.log("Failed to get todo items", error);
     res.status(500).json({ message: "Failed to get todo items" });
   }
 };
-
 
 // Route: Update a todo list item within a specific todo list
 exports.updatedTodoItem = async (req, res) => {
@@ -63,8 +60,8 @@ exports.updatedTodoItem = async (req, res) => {
     const listId = req.params.listId;
     const itemId = req.params.itemId;
     // Extract todo item properties from the request body
-    const { title, description, dueDate, completed } = req.body;
-
+    const { title, completed,priority } = req.body;
+    
     // Find the todo list to update the item in
     const todoList = await TodoList.findById(listId);
     if (!todoList) {
@@ -82,8 +79,6 @@ exports.updatedTodoItem = async (req, res) => {
     // Update the todo item properties
     const updatedTodoItem = {
       title,
-      description,
-      dueDate: new Date(dueDate),
       priority,
       completed,
     };
