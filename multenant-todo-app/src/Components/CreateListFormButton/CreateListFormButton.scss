@@ -1,0 +1,17 @@
+.create-list-form-container {
+  padding: 5px 25px;
+  display: flex;
+  justify-content: flex-end;
+  .create-list-form-button {
+    border: none;
+    outline: none;
+    transition: all 0.5s ease-in-out;
+    background-color: var(--button-color);
+    color: var(--white-color);
+    padding: 8px 15px;
+  }
+}
+
+:disabled {
+  transition: all 0.5s ease-in-out;
+}

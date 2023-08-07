@@ -1,0 +1,85 @@
+.todo-login {
+  width: 100vw;
+  padding-top: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  justify-content: center;
+  .todo-login-container {
+    display: flex;
+
+    width: fit-content;
+    padding: 20px;
+    background-color: #fff;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    .login-form {
+      display: flex;
+      width: 100%;
+      .form {
+        width: 100%;
+        gap: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .text-input {
+          display: flex;
+          gap: 10px;
+
+          align-items: center;
+          justify-content: center;
+          .form-input {
+            // height: 30px;
+            padding: 10px;
+            outline: none;
+            font-weight: 600;
+          }
+
+          .input-label-container {
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--button-color);
+          }
+        }
+        .form-button-container {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+
+          .form-button {
+            width: 280px;
+            padding: 7px 20px;
+            background-color: var(--button-color);
+            color: var(--white-color);
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            border: none;
+          }
+        }
+      }
+      
+    }
+  }
+}
+
+.register-handle-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+        .register-desc{
+          color: #999;
+        }
+        .register-title{
+          color: var(--button-color);
+          cursor: pointer;
+        }
+      }

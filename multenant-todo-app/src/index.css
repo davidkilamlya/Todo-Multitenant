@@ -1,0 +1,26 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  background-color: var(--background-color);
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-color: #3498db; /*(a calming shade of blue)*/
+  --secondary-color: #2ecc71; /*(a refreshing shade of green)*/
+  --background-color: #f9f9f9; /* (a light grayish background)*/
+  --text-color: #333333; /*(a dark grayish text color)*/
+  --button-success-color: #4caf50; /*(a green shade for buttons)*/
+  --error-color: #e74c3c; /*(a red shade for error messages)*/
+  --white-color: #fff;
+  --item-background-color: #bacedb;
+  --hover-color: #99c1db;
+  --low-priority-color: #3498db;
+  --medium-priority-color: #f39c12;
+  --high-priority-color: #e74c3c;
+  --button-color: #3545db;
+}

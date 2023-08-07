@@ -1,0 +1,38 @@
+.analytics-tab {
+  width: 88%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+
+  .analytics-tab-container {
+    width: fit-content;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    gap: 20px;
+    .analytics-tab-container-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+
+      .High,
+      .Low,
+      .Medium {
+        width: 10px;
+        height: 10px;
+      }
+      .High {
+        background-color: var(--high-priority-color);
+      }
+      .Medium {
+        background-color: var(--medium-priority-color);
+      }
+      .Low {
+        background-color: var(--low-priority-color);
+      }
+    }
+  }
+}

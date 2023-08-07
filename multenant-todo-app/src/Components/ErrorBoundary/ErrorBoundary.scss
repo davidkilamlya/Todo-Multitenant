@@ -1,0 +1,33 @@
+.error-boundary {
+  width: 50vw;
+  display: flex;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  height: 100vh;
+
+  z-index: 100;
+  /* border: 1px solid red; */
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 12vh;
+  height: 6vh;
+  .error-boundary-container {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--high-priority-color);
+    .error-message {
+      background-color: var(--white-color);
+      // box-shadow: 1px 1px 1px #ddd;
+
+      padding: 5px 10px;
+    }
+  }
+}

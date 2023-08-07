@@ -1,0 +1,55 @@
+.filter-item-chamber-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  
+  // gap: 20px;
+  justify-content: center;
+
+  .filter-completed-div-container {
+
+    border: 1px solid #999;
+    display: flex;
+    // align-items: center;
+    // justify-content: center;
+    padding: 2px;
+    transition: all 0.3 step-end;
+    .filter-completed-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80%;
+      // padding: 3px 40px;
+      gap: 7px;
+      .filter-completed {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px 5px;
+        cursor: pointer;
+      }
+      .active-alert-container {
+        width: 20px;
+        height: 20px;
+        padding: 3px;
+        border-radius: 50%;
+        background-color: red;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white-color);
+        
+        .active-alert {
+          font-size: 10px;
+          font-weight: 600;
+        }
+      }
+    }
+    .active {
+      background-color: var(--button-color);
+      color: var(--white-color);
+      transition: all 0.5 ease-in-out;
+      border: none;
+    }
+  }
+}

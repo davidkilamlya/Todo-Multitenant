@@ -1,0 +1,30 @@
+.spin-loader {
+  display: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  transform: translate(-50% -50%);
+  justify-content: center;
+  border: 4px solid rgba(0, 0, 0, 0.3);
+  border-left-color: #1e90ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.spin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

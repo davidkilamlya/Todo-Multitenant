@@ -1,0 +1,82 @@
+.todo-page {
+  padding-top: 14vh;
+}
+.todo-page-container {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+}
+.no-todo {
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white-color);
+  .no-to-message-container {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    .create-list-button {
+      padding: 8px 15px;
+      color: var(--white-color);
+      background-color: var(--button-color);
+      outline: none;
+      border: none;
+      border-radius: 7px;
+    }
+  }
+}
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  width: 100vw;
+  background-color: #fff;
+}
+.no-result-find {
+  width: 100%;
+  background-color: #fff;
+  padding: 10px 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  .searched-data {
+    color: blue;
+    // font-weight: bold;
+  }
+}
+.message-status {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  z-index: 3;
+}
+.view-create-form-container {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.filter-nav{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
