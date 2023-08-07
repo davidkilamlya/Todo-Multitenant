@@ -1,7 +1,5 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const jwtService = require("../services/JwtService");
-const User = require("../models/UserModel");
 const userController = require("../controllers/userController");
 
 const router = express.Router();
@@ -23,5 +21,7 @@ router.put(
 );
 
 router.post("/user", jwtService.verifyToken, userController.getUser);
+
+router.get("/logout", userController.userLogout);
 
 module.exports = router;

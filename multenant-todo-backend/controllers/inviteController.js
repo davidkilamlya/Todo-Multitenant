@@ -11,7 +11,7 @@ exports.inviteCollaborator = async (req, res) => {
   try {
     const listId = req.params.listId;
     const { collaboratorEmail, name, role, userId } = req.body;
-
+console.log("User idddddddddddddddddddddddddddd>>>>>>>> ",userId)
     // Find the todo list to add the collaborator to
     const todoList = await TodoList.findById(listId);
     if (!todoList) {

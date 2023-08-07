@@ -13,7 +13,7 @@ exports.acceptInvitation = async (req, res) => {
       return res.status(400).json({ message: "Invalid token" });
     }
 
-    const { todoListId, email, name, role, userId } = decodedToken;
+    const { todoListId, collaboratorEmail, name, role, userId } = decodedToken;
 
     // Find the todo list by ID
     const todoList = await TodoList.findById(todoListId);
@@ -25,13 +25,17 @@ exports.acceptInvitation = async (req, res) => {
 
     // Check if the email exists in the InviteCollaboratorEmail collection
     const invitedCollaboratorDetails = await InviteCollaboratorEmail.findOne({
-      recipientEmail: email,
+      recipientEmail: collaboratorEmail,
     });
-    console.log(decodedToken, "collaborator", invitedCollaboratorDetails);
+    console.log(
+      decodedToken,
+      "collaborator",
+      invitedCollaboratorDetails,
+      collaboratorEmail
+    );
     if (!invitedCollaboratorDetails) {
       return res.status(400).json({ message: "Invitation not found " });
     }
-    
 
     // Check if the invitation token has already been used
     if (todoList.usedInvitationTokens.includes(token)) {
@@ -44,7 +48,7 @@ exports.acceptInvitation = async (req, res) => {
     todoList.collaborators.push({
       role: role,
       name: name,
-      userId:userId
+      userId: userId,
     });
 
     // Mark the invitation token as used
@@ -55,7 +59,7 @@ exports.acceptInvitation = async (req, res) => {
 
     // Remove the invitation record from the database
     await InviteCollaboratorEmail.deleteOne({
-      recipientEmail: email,
+      recipientEmail: collaboratorEmail,
     });
 
     res.status(200).json({

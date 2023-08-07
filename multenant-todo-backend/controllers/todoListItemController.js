@@ -24,9 +24,14 @@ exports.createTodoItem = async (req, res) => {
 
     // Add the new todo item to the todo list
     todoList.todoItems.push(newTodoItem);
-    await todoList.save();
+    let newTodoListItems=await todoList.save();
 
-    res.status(201).json({ message: "Item created successfully", newTodoItem });
+    res
+      .status(201)
+      .json({
+        message: "Item created successfully",
+        newTodoListItems: newTodoListItems,
+      });
   } catch (error) {
     console.log("Failed to create todo item", error);
     res.status(500).json({ message: "Failed to create todo item" });
@@ -85,9 +90,9 @@ exports.updatedTodoItem = async (req, res) => {
 
     // Update the todo item in the todo list
     todoList.todoItems[itemIndex] = updatedTodoItem;
-    await todoList.save();
+   let updatetodo = await todoList.save();
 
-    res.status(200).json(updatedTodoItem);
+    res.status(200).json({updatedTodoItem:updatedTodoItem,message:"success",up:updatetodo});
   } catch (error) {
     console.log("Failed to update todo item", error);
     res.status(500).json({ message: "Failed to update todo item" });

@@ -36,8 +36,23 @@ exports.createTodoList = async (req, res) => {
 exports.getTodoLists = async (req, res) => {
   try {
     const ownerId = req.user._id;
-    const allTodoLists = await TodoList.find({ owner: ownerId });
-    res.status(200).json({ data: allTodoLists.reverse() });
+    //this is collaborated Data
+    const collaboratedTodoList = await TodoList.find({
+      "collaborators.userId": ownerId,
+    });
+    //Owned lists
+    const ownedLists = await TodoList.find({ owner: ownerId });
+
+    //all todoList for user
+    const allTodoLists = await TodoList.find({
+      $or: [{ owner: ownerId }, { "collaborators.userId": ownerId }],
+    });
+    // console.log(allTodoLists);
+    res.status(200).json({
+      data: allTodoLists.reverse(),
+      collaboratedList: collaboratedTodoList,
+      ownedLists:ownedLists
+    });
   } catch (error) {
     console.log("Failed to get list ", error);
     res.status(500).json({ message: "Failed to get lists" });
@@ -70,7 +85,7 @@ exports.updatedTodoList = async (req, res) => {
     const { todoListTitle, todoListDescription, deadlineDate, archived } =
       req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
     const newTodoList = {
       todoListTitle,
       todoListDescription,

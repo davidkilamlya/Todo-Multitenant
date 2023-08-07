@@ -1,6 +1,5 @@
 const express = require("express");
 const morgan = require("morgan");
-const bcrypt = require("bcrypt");
 const fs = require("fs");
 const cors = require("cors");
 const path = require("path");
@@ -8,12 +7,19 @@ const time = require("./middlewares/accessLogger/timeLogger");
 const ip = require("./middlewares/accessLogger/ipLogger");
 const connectDB = require("./config/db");
 const config = require("./config/config");
-const User = require("./models/UserModel");
+const cookieParser = require("cookie-parser");
+
+// Enable CORS for specific origin (http://localhost:3000 in this case)
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true, // Set this to 'true' to allow sending cookies in cross-origin requests
+};
 
 const app = express();
 require("dotenv").config();
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(cookieParser()); // Use cookie-parser middleware
 const PORT = config.PORT || 5001;
 const HOST = "localhost";
 
@@ -45,17 +51,16 @@ const TodoListRoute = require("./routes/TodoListRoute");
 const InvitationRoute = require("./routes/InvitationRoute");
 const AcceptInviteRoute = require("./routes/AcceptInviteRoute");
 const CollaboratorsRoute = require("./routes/CollaboratorsRoute");
+const checkAuth = require("./routes/CheckAuth");
 
 connectDB();
 app.use("/api/v1/", UserRoute);
 app.use("/api/v1/todo-lists/", TodoListRoute);
 app.use("/api/v1/todo-lists/", TodoListItemRoute);
 app.use("/api/v1/todo-lists/", InvitationRoute);
-app.use("/api/v1/todo-lists/", CollaboratorsRoute)
-app.use("/api/v1/accept-invite/",AcceptInviteRoute);
-
-
-
+app.use("/api/v1/todo-lists/", CollaboratorsRoute);
+app.use("/api/v1/accept-invite/", AcceptInviteRoute);
+app.use("/api/v1/checkAuth/", checkAuth);
 
 app.get("/", (req, res) => {
   res.send(

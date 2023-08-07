@@ -48,15 +48,27 @@ exports.userLogin = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Create a JWT token for the user
-    const token = await jwtService.generateToken(user._id, user.firstName);
-    console.log("user logged in successfully");
-    res.status(200).json({ token });
+    // Generate the JWT token
+    const token = jwtService.generateToken(user._id, user.firstName);
+
+    // Set the JWT token as an HTTP-only cookie in the response
+    jwtService.setTokenCookie(res, token);
+
+    console.log("User logged in successfully");
+    res.status(200).json({ message: "Login successful", user: user });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ message: "Failed to log in" });
   }
 };
+
+// Route: User Logout
+exports.userLogout = (req, res) => {
+  // Clear the token cookie by setting an expired cookie
+  res.cookie("jwtToken", "", { expires: new Date(0), httpOnly: true });
+  res.status(200).json({ message: "Logout successful" });
+};
+
 
 // Route: Get User Profile
 exports.getUserProfile = async (req, res) => {

@@ -11,26 +11,28 @@ const generateToken = (userId, userName) => {
   return jwt.sign(payload, secretKey, options);
 };
 
-// Middleware function to verify the JWT token from the request header
+// Function to set the JWT token as an HTTP-only cookie in the response
+const setTokenCookie = (res, token) => {
+  // Set the JWT token as an HTTP-only cookie
+  res.cookie("jwtToken", token, { httpOnly: true });
+};
+
+// Middleware function to verify the JWT token from the request cookies
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization;
-  console.log(token);
+  const token = req.cookies.jwtToken;
 
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
-  console.log(token);
+
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      console.log(err);
       return res.status(403).json({ message: "Invalid token" });
     }
-    console.log("token verified", decoded, req.headers.authorization);
     // Attach the user ID from the token to the request object for further use
     req.user = { _id: decoded.userId };
-    console.log(req.user);
     next();
   });
 };
 
-module.exports = { generateToken, verifyToken };
+module.exports = { generateToken, setTokenCookie, verifyToken };
