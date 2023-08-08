@@ -12,7 +12,7 @@ const cookieParser = require("cookie-parser");
 
 // Enable CORS for specific origin (http://localhost:3000 in this case)
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "multitenanttodowithdavid.azurewebsites.net",
   credentials: true, // Set this to 'true' to allow sending cookies in cross-origin requests
 };
 
