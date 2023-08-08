@@ -1,1 +1,1 @@
-exports.baseUrl = "http://localhost:5001/api/v1/";
+exports.baseUrl = "multitenanttodowithdavid.azurewebsites.net/api/v1/";

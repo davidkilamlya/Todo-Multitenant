@@ -4,8 +4,8 @@ const config = require("../config/config");
 const secretKey = config.secret_key;
 
 // Function to generate a JWT token for a given user ID
-const generateToken = (userId, userName) => {
-  const payload = { userId, userName };
+const generateToken = (userId, userName,email) => {
+  const payload = { userId, userName,email };
   const options = { expiresIn: "3h" };
 
   return jwt.sign(payload, secretKey, options);
@@ -29,8 +29,9 @@ const verifyToken = (req, res, next) => {
     if (err) {
       return res.status(403).json({ message: "Invalid token" });
     }
-    // Attach the user ID from the token to the request object for further use
-    req.user = { _id: decoded.userId };
+    // Attach the user from the token to the request object for further use
+    req.user = { _id: decoded.userId, userName: decoded.userName,email:decoded.email };
+    console.log(decoded);
     next();
   });
 };

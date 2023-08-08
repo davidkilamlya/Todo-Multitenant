@@ -5,11 +5,9 @@ import Collaborator from "../Collaborator/Collaborator";
 import Header from "../Header/Header";
 import { useParams } from "react-router";
 import axiosInstance from "../../util/axiosInstance";
-import { baseUrl } from "../../constants/baseUrl";
-import { config } from "../../util/axiosInstance";
+import { useSelector } from "react-redux";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import AcceptInvite from "../AcceptInvite/AcceptInvite";
 
 function CollaboratorsList() {
   //state variables
@@ -22,32 +20,32 @@ function CollaboratorsList() {
   const [userExistMessage, setUserExistMessage] = useState();
 
   const [collaboratorStatus, setCollaboratorStatus] = useState();
-
   const [statusColor, setStatusColor] = useState();
+
+  const listOwnerEmail = useSelector((state) => state.user.email);
 
   //extract listId from the url
   let { listId } = useParams();
 
   const fetchCollaborators = async () => {
     setIsLoading(true);
-   axiosInstance
-     .get(`todo-lists/${listId}/collaborators/`)
-     .then((response) => {
-       setCollaborators(response.data);
-       setIsLoading(false);
-     })
-     .catch((err) => {
-       setCollaboratorStatus("failed to get the list");
-       setStatusColor("red");
-       setIsLoading(false);
-     });
+    axiosInstance
+      .get(`todo-lists/${listId}/collaborators/`)
+      .then((response) => {
+        setCollaborators(response.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setCollaboratorStatus("failed to get the list");
+        setStatusColor("red");
+        setIsLoading(false);
+      });
   };
   const fetchList = async () => {
     setIsLoading(true);
     await axiosInstance
       .get(`todo-lists/${listId}`)
       .then((response) => {
-        console.log(response.data);
         setTodoListTitle(response.data.todoListTitle);
         setIsLoading(false);
       })
@@ -62,9 +60,7 @@ function CollaboratorsList() {
   const collaboratorDelete = async (collaboratorId) => {
     setIsLoading(true);
     await axiosInstance
-      .delete(
-        `todo-lists/${listId}/collaborators/${collaboratorId}`
-      )
+      .delete(`todo-lists/${listId}/collaborators/${collaboratorId}`)
       .then(() => {
         setCollaboratorStatus("success");
         setStatusColor("green");
@@ -81,20 +77,20 @@ function CollaboratorsList() {
   //delete all collaborators
   const deleteAllCollaborators = async () => {
     setIsLoading(true);
-   axiosInstance
-     .delete(`todo-lists/${listId}/deleteAllCollaborators/`)
-     .then((response) => {
-       setCollaboratorStatus("success");
-       setStatusColor("green");
-       fetchCollaborators();
-       setIsLoading(false);
-     })
-     .catch((err) => {
-       setCollaboratorStatus("delete operation failed");
-       setStatusColor("red");
-       console.log(err);
-       setIsLoading(false);
-     });
+    axiosInstance
+      .delete(`todo-lists/${listId}/deleteAllCollaborators/`)
+      .then((response) => {
+        setCollaboratorStatus("success");
+        setStatusColor("green");
+        fetchCollaborators();
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setCollaboratorStatus("delete operation failed");
+        setStatusColor("red");
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   //update collaborators
@@ -107,10 +103,7 @@ function CollaboratorsList() {
       role: collaboratorRole,
     };
     await axiosInstance
-      .put(
-        `todo-lists/${listId}/collaborators/${collaboratorId}`,
-        data
-      )
+      .put(`todo-lists/${listId}/collaborators/${collaboratorId}`, data)
       .then((response) => {
         setCollaboratorStatus("success");
         setStatusColor("green");
@@ -131,18 +124,14 @@ function CollaboratorsList() {
       .then((response) => {
         let firstName = response.data.firstName;
 
-        if (response.data.email === email) {
+        if (response.data.email === email && email !== listOwnerEmail) {
           axiosInstance
-            .post(
-              `todo-lists/${taskId}/collaborators/invite`,
-              {
-                collaboratorEmail: email,
-                name: firstName,
-                role: inviteRole,
-                userId: response.data._id,
-              },
-            
-            )
+            .post(`todo-lists/${taskId}/collaborators/invite`, {
+              collaboratorEmail: email,
+              name: firstName,
+              role: inviteRole,
+              userId: response.data._id,
+            })
             .then((response) => {
               // setDisplayCollaboratorInput(false);
               setIsLoading(false);
@@ -156,6 +145,10 @@ function CollaboratorsList() {
               setCollaboratorStatus("something went wrong");
               setStatusColor("red");
             });
+        } else if (email === listOwnerEmail) {
+          setCollaboratorStatus("sorry, You can not invite your self");
+          setIsLoading(false);
+          setStatusColor("red");
         } else {
           setCollaboratorStatus("user is not registered");
           setStatusColor("red");

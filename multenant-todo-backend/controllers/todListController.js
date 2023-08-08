@@ -63,6 +63,7 @@ exports.getTodoLists = async (req, res) => {
 exports.getTodoList = async (req, res) => {
   try {
     const listId = req.params.id;
+    const {ownerId}=req.body
     console.log("id is", listId);
 
     const todoList = await TodoList.findById(listId);

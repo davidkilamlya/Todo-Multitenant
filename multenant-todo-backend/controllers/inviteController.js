@@ -5,29 +5,35 @@ const {
   generateInvitationToken,
 } = require("../services/InvitationTokenService");
 const config = require("../config/config");
+const { baseUrl } = require("../constant/baseUrl");
 
 // Route: Invite a collaborator to a specific todo list
 exports.inviteCollaborator = async (req, res) => {
   try {
+    const ownerEmail = req.user.email;
     const listId = req.params.listId;
     const { collaboratorEmail, name, role, userId } = req.body;
-console.log("User idddddddddddddddddddddddddddd>>>>>>>> ",userId)
+    console.log(
+      "User idddddddddddddddddddddddddddd>>>>>>>> ",
+      userId,
+      ownerEmail,
+      collaboratorEmail
+    );
     // Find the todo list to add the collaborator to
     const todoList = await TodoList.findById(listId);
     if (!todoList) {
       return res.status(404).json({ message: "Todo list not found" });
     }
-    
-    
 
     // Check if the collaborator with the provided userId already exists in the collaborators array
     const collaboratorExists = todoList.collaborators.some(
       (collaborator) => String(collaborator.userId) === String(userId)
     );
     if (collaboratorExists) {
-      return res
-        .status(400)
-        .json({ message: "Collaborator already exists in the todo list" , userId});
+      return res.status(400).json({
+        message: "Collaborator already exists in the todo list",
+        userId,
+      });
     }
 
     // Create a new collaboration record with the invitation details
@@ -61,15 +67,15 @@ console.log("User idddddddddddddddddddddddddddd>>>>>>>> ",userId)
         pass: config.mailPass,
       },
     });
-    const inviteLink = `http://localhost:3000/accept-invite/${invitationToken}`;
+    const inviteLink = `${baseUrl}/accept-invite/${invitationToken}`;
     const mailOptions = {
-      from: "dkilamlya@gmail.com", // sender address
-      to: "dkilamlya@gmail.com,clnthrt@gmail.com", // list of receivers
+      from: ownerEmail, // sender address
+      to: collaboratorEmail, // list of receivers
       subject: "Task Collaboration invitation ✔", // Subject line
 
       html:
         "<b>You have been invited to collaborate on a Todo List" +
-        `\nClick below to accept the invitation:</b><br/><a href=${inviteLink}>Accept</a><span>This link will expire after 1 hour</span>`, // html body
+        `\nClick below to accept the invitation:</b><br/><a href=${inviteLink}>Accept</a><br></br><br></br><span>This link will expire after 1 hour</span>`, // html body
     };
 
     transporter.sendMail(mailOptions, async (error, info) => {

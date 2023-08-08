@@ -9,6 +9,7 @@ const connectDB = require("./config/db");
 const config = require("./config/config");
 const cookieParser = require("cookie-parser");
 
+
 // Enable CORS for specific origin (http://localhost:3000 in this case)
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -16,6 +17,7 @@ const corsOptions = {
 };
 
 const app = express();
+app.use(express.static("./build"))
 require("dotenv").config();
 app.use(express.json());
 app.use(cors(corsOptions));
@@ -53,6 +55,9 @@ const AcceptInviteRoute = require("./routes/AcceptInviteRoute");
 const CollaboratorsRoute = require("./routes/CollaboratorsRoute");
 const checkAuth = require("./routes/CheckAuth");
 
+app.get("*",(req,res)=>{
+  res.sendFile(path.resolve(__dirname,"build","index.html"))
+});
 connectDB();
 app.use("/api/v1/", UserRoute);
 app.use("/api/v1/todo-lists/", TodoListRoute);

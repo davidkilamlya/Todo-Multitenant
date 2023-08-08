@@ -49,7 +49,9 @@ function AcceptInvite() {
           </div>
           <h2 className="message">{status}</h2>
           <div className="home-link-container">
-            <a href="/" className="home-link">Home</a>
+            <a href="/" className="home-link">
+              Home
+            </a>
           </div>
         </div>
       )}

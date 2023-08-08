@@ -5,13 +5,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import { baseUrl } from "../../constants/baseUrl";
+import { user } from "../../Actions/userActions";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../Actions/AuthActions";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function LoginForm() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const user = useSelector((state) => state.auth.user);
+  // const user = useSelector((state) => state.user.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ function LoginForm() {
   //   navigate("/");
   // }
   // })
- 
+
   //login state variables
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -46,12 +47,13 @@ function LoginForm() {
         email,
         password,
       };
-      const user = await axiosInstance.post(`/login`, userDetails);
-      dispatch(loginSuccess(user.data.user));
+      const userD = await axiosInstance.post(`/login`, userDetails);
+      dispatch(loginSuccess(userD.data.user));
       setStatusMessage("success");
-      console.log(user, isAuthenticated);
+
       setStatusColor("green");
       setIsLoading(false);
+      dispatch(user(userD.data.user));
       //navigate user to homepage
       navigate("/");
     } catch (err) {

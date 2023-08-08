@@ -29,7 +29,7 @@ function TodoPage() {
 
   //get all todo list data
   const fetchTodoListData = async () => {
-    console.log("data is fetched");
+    
     try {
       setIsLoading(true);
 
@@ -45,7 +45,7 @@ function TodoPage() {
               return response.data.collaboratedList;
             }
           };
-          console.log(data());
+        
           setIsLoading(false);
 
           setTodoListData(data());

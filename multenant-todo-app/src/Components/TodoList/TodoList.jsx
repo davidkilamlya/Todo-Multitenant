@@ -6,7 +6,8 @@ import axiosInstance from "../../util/axiosInstance";
 import SearchFilter from "../SearchFilter/SearchFilter";
 import { handleTodoListItemSearchFilter } from "../../util/searchFiterUtil";
 import FilterChamber from "../FilterChamber/FilterChamber";
-
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 function TodoList({
   date,
   todoListTitle,
@@ -58,6 +59,9 @@ function TodoList({
   const [activeAdded, setActiveAdded] = useState(0);
   const [completedAdded, setCompletedAdded] = useState(0);
 
+  const userId = useSelector((state) => state.user.id);
+  const navigate = useNavigate();
+  const listOwnerEmail = useSelector((state) => state.user.email);
   //Add todo task in todo list-item
   const addTodo = async (listId) => {
     const listItemData = {
@@ -154,12 +158,11 @@ function TodoList({
     if (actionsVisible) {
       setPrevListTaskTitle(listTaskTitle);
       setPrevListTaskDate(date);
-      console.log(prevListTaskTitle);
+
       setActionsVisible(false);
     } else {
       setActionsVisible(true);
       setDisplayCollaboratorInput(false);
-      console.log(prevListTaskTitle);
 
       setDisplayTaskEditor(false);
       if (prevListTaskDate && prevListTaskTitle) {
@@ -226,6 +229,25 @@ function TodoList({
     setInviteRole(e.target.value);
   };
 
+  const checkOwnerAndApprove = async (taskId) => {
+    setIsLoading(true);
+    await axiosInstance
+      .get(`todo-lists/${taskId}/`)
+      .then((response) => {
+        
+        const listOwnerId = response.data.owner;
+        if (listOwnerId === userId) {
+          navigate(`${todoListId}/collaborators`);
+        } else {
+          setTodoPageStatus("You are not authorized to access this");
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setTodoPageStatus("Something went wrong");
+      });
+  };
+
   //handle invite action
   const invite = async (email, taskId) => {
     setIsLoading(true);
@@ -235,7 +257,7 @@ function TodoList({
       .then((response) => {
         let firstName = response.data.firstName;
         console.log(email, inviteRole, response.data);
-        if (response.data.email === email) {
+        if (response.data.email === email && email !== listOwnerEmail) {
           axiosInstance
             .post(`todo-lists/${taskId}/collaborators/invite`, {
               collaboratorEmail: email,
@@ -262,6 +284,9 @@ function TodoList({
 
               setStatusColor("red");
             });
+        } else if (email === listOwnerEmail) {
+          setUserExistMessage("sorry, You can not invite your self");
+          setIsLoading(false);
         } else {
           setUserExistMessage("user is not registered");
           setIsLoading(false);
@@ -374,37 +399,37 @@ function TodoList({
     setIsLoading(true);
 
     if (listTaskTitle && listTaskDescription && status && listTaskDate) {
-     axiosInstance
-       .put(`todo-lists/${todoListId}`, listUpdateData)
-       .then((response) => {
-         console.log("update response", response);
-         setListTaskTitle(listTaskTitle);
-         setListTaskDescription(listTaskDescription);
-         let updatedListDate = new Date(listTaskDate).toDateString();
-         setListTaskDate(updatedListDate);
-         setDisplayTaskEditor(false);
-         setPrevListTaskTitle(listTaskTitle);
-         setPrevListTaskDate(listTaskDate);
+      axiosInstance
+        .put(`todo-lists/${todoListId}`, listUpdateData)
+        .then((response) => {
+          console.log("update response", response);
+          setListTaskTitle(listTaskTitle);
+          setListTaskDescription(listTaskDescription);
+          let updatedListDate = new Date(listTaskDate).toDateString();
+          setListTaskDate(updatedListDate);
+          setDisplayTaskEditor(false);
+          setPrevListTaskTitle(listTaskTitle);
+          setPrevListTaskDate(listTaskDate);
 
-         console.log(
-           todoListId,
-           listTaskTitle,
-           listTaskDescription,
-           status,
-           listTaskDate
-         );
-         setIsLoading(false);
+          console.log(
+            todoListId,
+            listTaskTitle,
+            listTaskDescription,
+            status,
+            listTaskDate
+          );
+          setIsLoading(false);
 
-         setTodoPageStatus(response.data.message);
-         setStatusColor("green");
-       })
-       .catch((err) => {
-         setIsLoading(true);
+          setTodoPageStatus(response.data.message);
+          setStatusColor("green");
+        })
+        .catch((err) => {
+          setIsLoading(true);
 
-         console.log("update error occurred", err);
-         setTodoPageStatus("failed to update List");
-         setStatusColor("red");
-       });
+          console.log("update error occurred", err);
+          setTodoPageStatus("failed to update List");
+          setStatusColor("red");
+        });
     } else {
       setTodoPageStatus("Please fill all fields");
       setStatusColor("red");
@@ -502,12 +527,12 @@ function TodoList({
                     >
                       Delete Task
                     </button>
-                    <a
-                      href={`${todoListId}/collaborators`}
+                    <button
+                      onClick={() => checkOwnerAndApprove(todoListId)}
                       className="manage-collaborators-action action"
                     >
                       Manage team
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>

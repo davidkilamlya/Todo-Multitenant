@@ -42,20 +42,24 @@ exports.userLogin = async (req, res) => {
 
     // Find the user by email
     const user = await User.findOne({ email });
-
     // If the user doesn't exist or the password is incorrect, return an error
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     // Generate the JWT token
-    const token = jwtService.generateToken(user._id, user.firstName);
+    const token = jwtService.generateToken(user._id, user.firstName,user.email);
 
     // Set the JWT token as an HTTP-only cookie in the response
     jwtService.setTokenCookie(res, token);
 
     console.log("User logged in successfully");
-    res.status(200).json({ message: "Login successful", user: user });
+    res
+      .status(200)
+      .json({
+        message: "Login successful",
+        user: { id: user._id, email: user.email, firstName: user.firstName },
+      });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ message: "Failed to log in" });
@@ -68,7 +72,6 @@ exports.userLogout = (req, res) => {
   res.cookie("jwtToken", "", { expires: new Date(0), httpOnly: true });
   res.status(200).json({ message: "Logout successful" });
 };
-
 
 // Route: Get User Profile
 exports.getUserProfile = async (req, res) => {
@@ -124,17 +127,12 @@ exports.updateUserProfile = async (req, res) => {
 //get single user
 exports.getUser = async (req, res) => {
   const { email } = req.body;
- 
+
   try {
-  
     const user = await User.findOne({ email }).select("-password");
     if (!user) {
-     
-
       return res.status(404).json({ message: "User not found", user: false });
     } else {
-     
-
       return res.status(200).json(user);
     }
   } catch (err) {
