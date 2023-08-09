@@ -25,18 +25,6 @@ function Header() {
   return (
     <div className="header">
       <div className="header-container">
-        <div className="home-nav-container">
-          <div className="home-nav">
-            <div className="home-nav-link-container">
-              <a href="/" className="home-nav-link">
-                Home
-              </a>
-            </div>
-            <div className="home-nav-indicator-container">
-              <MdOutlineKeyboardDoubleArrowLeft className="home-nav-link-indicator" />
-            </div>
-          </div>
-        </div>
         <div className="header-logo-container">
           <h3 className="logo">MULTITENANT TODO</h3>
         </div>
@@ -62,6 +50,18 @@ function Header() {
             >
               Logout
             </button>
+          </div>
+        </div>
+      </div>
+      <div className="home-nav-container">
+        <div className="home-nav">
+          <div className="home-nav-link-container">
+            <a href="/" className="home-nav-link">
+              Home
+            </a>
+          </div>
+          <div className="home-nav-indicator-container">
+            <MdOutlineKeyboardDoubleArrowLeft className="home-nav-link-indicator" />
           </div>
         </div>
       </div>

@@ -7,8 +7,8 @@
 
   .header-container {
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+    // align-items: center;
+    justify-content: space-between;
 
     width: 98%;
     .header-logo-container {
@@ -78,9 +78,11 @@
 
 .home-nav {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  // align-items: cent;
+  // justify-content: center;
+  padding-bottom: 4px;
+  padding-left: 10px;
+  gap: 2px;
   .home-nav-link-container {
     display: flex;
     align-items: center;
@@ -94,6 +96,7 @@
   .home-nav-indicator-container{
     display: flex;
     color: #999;
+    display: none;
     justify-content: center;
     align-items: center;
     text-align: center;

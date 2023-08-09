@@ -141,7 +141,7 @@ function TodoPage() {
       });
   };
 
-  let dateRegex = /(03:00:00)/gi;
+  let dateRegex = /(00:00:00)/gi;
 
   //Display create list form component
   const displayCreateListForm = () => {

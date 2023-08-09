@@ -1,1 +1,1 @@
-exports.baseUrl = `http://localhost:3000`;
+exports.baseUrl = `/api/v1`;
